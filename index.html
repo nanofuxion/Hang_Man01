@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My First Object</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="jumbotron">
+                    <h1 id="h1txt" class="display-4" style="text-align: center;">Hang Man</h1>
+                    <p class="lead" id="letter" style="text-align: center;">Just an average hangman game, nothing special.</p>
+                    <p id="guessed"></p>
+                    <hr class="my-4">
+                    <p> Press a letter key to start guess.</p>
+                    <p class="hidden">It isn't true that convicts live like animals: animals have more room to move around. </br>
+                        quote by mario vargas llosa
+                    </p>
+                    <div class="col-12 containerator">
+                        <div id="wordsspot" class="centerwrapper">
+
+                        </div>
+                    </div>
+                    <a class="btn btn-primary btn-lg col-12" href="#" onClick="learn();" role="button">Learn more</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // Let's start by grabbing a reference to the <span> below. 
+        var userText = document.getElementById("letter");
+        // Next, we give JavaScript a function to execute when onkeyup event fires. 
+        document.onkeyup = function(event) {
+            checkletters(event.key);
+            userText.textContent = event.key;
+        };
+        var wordlist = ["fight", "missing", "lost", "scared", "dark", "confused", "aggress", "gruesome", "afraid"];
+        var wordsspot = document.getElementById("wordsspot");
+        var wrongcount = 10;
+
+        function randomize(wordarray) {
+            randint = Math.floor(Math.random() * wordarray.length);
+            return randint;
+        };
+
+        function setword() {
+            wordsspot.textContent = "";
+            // select a word from the array, remove the word from array onced selected to prevent repeating the same word 
+            var numberplacement = randomize(wordlist);
+            var word = wordlist[numberplacement];
+            wordlist.splice(numberplacement, 1); // // //once all words have been guess if 
+
+            //list of letters in current word
+            wordletters = [];
+            wordletters = word.split('');
+
+            //make a div for each letter
+            var Div;
+            for (let i = 0; i < wordletters.length; i++) {
+                Div = document.createElement("div");
+                Div.textContent = wordletters[i];
+                Div.id = ("letter_" + i);
+                Div.className = "square";
+                wordsspot.appendChild(Div);
+            }
+        }
+        setword();
+        var setted = 0;
+
+        function checkletters(keypressed) {
+            var guessed = document.getElementById("guessed");
+            guessed.style = ("visibility: visible;");
+            var guesses;
+            var letters;
+            guessed.textContent = "you have " + wrongcount + " guesses left.";
+            for (let i = 0; i < wordletters.length; i++) {
+                var div = document.getElementById("letter_" + i);
+                //set the letter active
+                if (keypressed == div.textContent) {
+                    //div.style = ("color: red; -webkit-transition: color 3s; transition: color 3s;");
+                    div.className = "squareu setted";
+                }
+            }
+            for (let i = 0; i < wordletters.length; i++) {
+                if (div.className == "squareu setted") {
+                    setted++;
+                    if (wordletters.length == setted) {
+                        setTimeout(next(), 3000);
+                    }
+                }
+
+            }
+            if (wordletters.indexOf(keypressed) < 0) {
+                wrongcount--;
+                letters = letters + " " + keypressed;
+                guessed.textContent = "you have " + wrongcount + " guesses left.";
+            }
+
+            function next() {
+                setword();
+                guessed++;
+            }
+
+
+        }
+    </script>
+
+
+    <!-- effects -->
+    <script>
+        setTimeout(flicker(), 3000);
+        var audio;
+
+        function resettext() {
+            document.getElementById("h1txt").className = "display-4";
+            document.getElementById("h1txt").innerText = "Hang Man";
+
+        }
+
+        function flicker() {
+            document.getElementById("h1txt").className = "display-4 flickertext";
+            document.getElementById("h1txt").innerText = "Missing Man!";
+            //audio = new Audio("sfx/Scary-Titus_Calen-1449371204.mp3");
+            // audio.play();
+            setTimeout(resettext, 3000);
+        }
+
+        async function learn() {
+            audio = new Audio("sfx/Incoming_Suspense-Maximilien_-1060577487.mp3");
+            audio.play();
+            document.body.style = ("background-color: darkred; -webkit-transition: color 3s; transition: color 3s;");
+            setTimeout(pop, 30);
+
+        }
+
+        function pop() {
+            alert('there is nothing to learn just RELAX AND... PICK... A... LETTER...');
+            document.body.style = ("background-color: white;");
+        }
+    </script>
+
+</body>
+
+</html>

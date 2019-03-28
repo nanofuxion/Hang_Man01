@@ -1,0 +1,59 @@
+.flickertext {
+    color: red !important;
+    -webkit-transition: background 3s, color 3s !important;
+    transition: background 3s, color 3s !important;
+}
+
+.help {
+    position: fixed;
+    left: 10px;
+    top: 100px;
+}
+
+.helpfade {}
+
+.hidden {
+    color: #e9ecef;
+    -webkit-user-select: all;
+    /* Chrome 49+ */
+    -moz-user-select: all;
+    /* Firefox 43+ */
+    -ms-user-select: all;
+    /* No support yet */
+    user-select: all;
+    /* Likely future */
+}
+
+#guessed {
+    visibility: hidden;
+}
+
+.square {
+    font-family: monospace;
+    margin: 1pt;
+    display: inline-block;
+    border-bottom: 4px solid gray;
+    color: #e9ecef;
+    padding-right: 4pt;
+    font-size: 24pt;
+}
+
+.squareu {
+    font-family: monospace;
+    margin: 1pt;
+    display: inline-block;
+    border-bottom: 4px solid gray;
+    color: red;
+    padding-right: 4pt;
+    font-size: 24pt;
+    -webkit-transition: color 3s;
+    transition: color 3s;
+}
+
+.containerator {
+    text-align: center;
+}
+
+.centerwrapper {
+    margin: auto;
+}
