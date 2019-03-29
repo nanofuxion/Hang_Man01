@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>My First Object</title>
+    <title>Hang Man</title>
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -46,8 +46,10 @@
             userText.textContent = event.key;
         };
         var wordlist = ["fight", "missing", "lost", "scared", "dark", "confused", "aggress", "gruesome", "afraid"];
-        var wordsspot = document.getElementById("wordsspot");
+        var wordsspot;
         var wrongcount = 10;
+        var numberplacement;
+        var word;
 
         function randomize(wordarray) {
             randint = Math.floor(Math.random() * wordarray.length);
@@ -55,10 +57,11 @@
         };
 
         function setword() {
+            wordsspot = document.getElementById("wordsspot");
             wordsspot.textContent = "";
             // select a word from the array, remove the word from array onced selected to prevent repeating the same word 
-            var numberplacement = randomize(wordlist);
-            var word = wordlist[numberplacement];
+            numberplacement = randomize(wordlist);
+            word = wordlist[numberplacement];
             wordlist.splice(numberplacement, 1); // // //once all words have been guess if 
 
             //list of letters in current word
@@ -74,7 +77,7 @@
                 Div.className = "square";
                 wordsspot.appendChild(Div);
             }
-        }
+        };
         setword();
         var setted = 0;
 
@@ -90,49 +93,59 @@
                 if (keypressed == div.textContent) {
                     //div.style = ("color: red; -webkit-transition: color 3s; transition: color 3s;");
                     div.className = "squareu setted";
+                    setted = setted + 1;
                 }
             }
             for (let i = 0; i < wordletters.length; i++) {
-                if (div.className == "squareu setted") {
-                    setted++;
-                    if (wordletters.length == setted) {
-                        setTimeout(next(), 3000);
-                    }
+                // if (div.className == "squareu setted") {
+
+                if ((wordletters.length <= setted) && (setted != 0)) {
+                    next(3000);
                 }
+                // }
 
             }
             if (wordletters.indexOf(keypressed) < 0) {
                 wrongcount--;
                 letters = letters + " " + keypressed;
                 guessed.textContent = "you have " + wrongcount + " guesses left.";
-            }
-
-            function next() {
-                setword();
-                guessed++;
+                if (wrongcount = 0) location.reload();
             }
 
 
+
+        }
+
+
+        function next(time) {
+            setted = 0;
+            guessed++;
+            var wordsspot;
+            numberplacement = 0;
+            word = "";
+            setTimeout(setword(), time);
         }
     </script>
 
 
     <!-- effects -->
     <script>
-        setTimeout(flicker(), 3000);
+        setTimeout(flicker, 3000);
         var audio;
 
         function resettext() {
             document.getElementById("h1txt").className = "display-4";
             document.getElementById("h1txt").innerText = "Hang Man";
+            document.title = "Hang Man!";
 
         }
 
-        function flicker() {
+        async function flicker() {
             document.getElementById("h1txt").className = "display-4 flickertext";
             document.getElementById("h1txt").innerText = "Missing Man!";
-            //audio = new Audio("sfx/Scary-Titus_Calen-1449371204.mp3");
-            // audio.play();
+            document.title = "Missing Man!";
+            audio = new Audio("sfx/Scary-Titus_Calen-1449371204.mp3");
+            audio.play();
             setTimeout(resettext, 3000);
         }
 
